@@ -1,13 +1,14 @@
-package com.sample.config;
+package com.sample.front.config;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-public class HelloWorldInitializer implements WebApplicationInitializer {
+import javax.servlet.*;
+import java.util.EnumSet;
+
+public class FrontInitializer implements WebApplicationInitializer {
 
   private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
 
@@ -17,8 +18,17 @@ public class HelloWorldInitializer implements WebApplicationInitializer {
   }
 
   private void registerDispatcherServlet(ServletContext servletContext) {
-    AnnotationConfigWebApplicationContext dispatcherContext = createContext(HelloWorldConfig.class);
+    AnnotationConfigWebApplicationContext dispatcherContext = createContext(FrontConfig.class);
     ServletRegistration.Dynamic dispatcher;
+
+    CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+    characterEncodingFilter.setEncoding("UTF-8");
+    characterEncodingFilter.setForceEncoding(true);
+
+    EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
+
+    FilterRegistration.Dynamic characterEncoding = servletContext.addFilter("characterEncoding", characterEncodingFilter);
+    characterEncoding.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
 
     dispatcher = servletContext.addServlet(DISPATCHER_SERVLET_NAME, new DispatcherServlet(dispatcherContext));
     dispatcher.setLoadOnStartup(1);

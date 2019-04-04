@@ -1,13 +1,12 @@
 buildscript {
     repositories { mavenCentral() }
 }
-plugins {
-    id "io.spring.dependency-management" version "1.0.5.RELEASE"
-}
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
+
 dependencies {
+    compile project(':common')
+    compile 'org.springframework:spring-webmvc:4.3.6.RELEASE'
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
 }
