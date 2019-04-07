@@ -7,10 +7,19 @@
         crossorigin="anonymous"></script>
 </head>
 <body>
-    Hello World
-
+<div>
+    MongoDB
     <button onclick="onBtnAdd()">add Data</button>
     <button onclick="onBtnSelect()">any name</button>
+</div>
+<br>
+<div>
+    Mysql
+    <button onclick="onBtnAddUser()">user ADD</button>
+    <button onclick="onBtnSelectUser()">select All User</button>
+    <button onclick="onBtnUpdateUser()">update User</button>
+    <button onclick="onBtnDeleteUser()">update User</button>
+</div>
     <script>
         var onBtnAdd = function() {
             $.ajax({
@@ -26,6 +35,70 @@
             $.ajax({
                 type: "get",
                 url: "/api/sample/any",
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                }
+            });
+        }
+        var userId = 0;
+        var onBtnAddUser = function() {
+            $.ajax({
+                type: "post",
+                url: "/api/rdb/user",
+                contentType : "appliaction/json",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                dataType: 'json',
+                data:  JSON.stringify({
+                    "id": userId++,
+                    "userName": "test",
+                    "phone": "010-3333-3333"
+                }),
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                }
+            });
+        }
+
+        var onBtnSelectUser = function() {
+            $.ajax({
+                type: "get",
+                url: "/api/rdb/user?page=1",
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                }
+            });
+        }
+
+        var onBtnUpdateUser = function() {
+            $.ajax({
+                type: "put",
+                url: "/api/rdb/user/1",
+                contentType : "appliaction/json",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                dataType: 'json',
+                data: JSON.stringify({
+                    "id": 1,
+                    "userName": "test_update",
+                    "phone": "010-3333-3333"
+                }),
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                }
+            });
+        }
+
+        var onBtnDeleteUser = function() {
+            $.ajax({
+                type: "delete",
+                url: "/api/rdb/user/1",
+                contentType : "appliaction/json",
+                dataType: 'json',
                 success: function(data) {
                     alert(JSON.stringify(data));
                 }

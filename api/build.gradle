@@ -2,7 +2,7 @@ dependencies {
     compile project(':common')
     compile 'org.springframework:spring-webmvc:4.3.6.RELEASE'
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
-
 }

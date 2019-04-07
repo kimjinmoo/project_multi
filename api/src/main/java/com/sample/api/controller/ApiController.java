@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,8 +36,8 @@ public class ApiController {
     }
 
     @GetMapping("/rdb/user")
-    public Object getUser() {
-        return commonService.findUserAll();
+    public Object getUser(@RequestParam int page) {
+        return commonService.findUserAll(page);
     }
 
     @GetMapping("/rdb/user/{id}")
@@ -48,11 +45,24 @@ public class ApiController {
         return commonService.findUserById(id);
     }
 
-    @GetMapping("/rdb/user/add")
-    public User saveSample() {
-        User user = new User();
-        user.setUserName("tester");
-        user.setPhone("010-1111-2222");
-        return commonService.saveUserAll(user);
+    @PostMapping("/rdb/user")
+    public User saveUser(@RequestBody User user) {
+        commonService.saveUsers(user);
+
+        return commonService.findUserById(user.getId());
+    }
+
+    @PutMapping("/rdb/user/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
+        // id를 Set
+        user.setId(id);
+        commonService.updateUser(user);
+
+        return commonService.findUserById(user.getId());
+    }
+
+    @DeleteMapping("/rdb/user/{id}")
+    public  void deleteUser(@PathVariable int id) {
+        commonService.deleteUser(id);
     }
 }

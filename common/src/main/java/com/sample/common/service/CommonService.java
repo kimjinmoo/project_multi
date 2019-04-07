@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class CommonService {
 
     @Autowired
@@ -31,18 +33,25 @@ public class CommonService {
         commonMongoDBRepository.create(sample);
     }
 
-    @Transactional(readOnly = true)
-    public Iterable<User> findUserAll() {
-        return commonMysqlRepository.findAll();
+    public Iterable<User> findUserAll(int page) {
+        return commonMysqlRepository.findAll(page);
     }
 
-    @Transactional(readOnly = true)
     public User findUserById(int id) {
-        return commonMysqlRepository.findBy(id);
+        return commonMysqlRepository.finUserById(id);
     }
 
-    @Transactional
-    public User saveUserAll(User user) {
-        return commonMysqlRepository.save(user);
+    public void saveUsers(User user) {
+        commonMysqlRepository.saveUser(user);
+    }
+
+    public void updateUser(User user) {
+        commonMysqlRepository.updateUser(user);
+    }
+
+    public void deleteUser(int id) {
+        User user = commonMysqlRepository.finUserById(id);
+
+        commonMysqlRepository.deleteUser(user);
     }
 }
