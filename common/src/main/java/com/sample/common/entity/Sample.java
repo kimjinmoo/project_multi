@@ -1,4 +1,4 @@
-package com.sample.common.domain;
+package com.sample.common.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

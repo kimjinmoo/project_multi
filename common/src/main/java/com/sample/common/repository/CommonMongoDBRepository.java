@@ -1,15 +1,14 @@
 package com.sample.common.repository;
 
-import com.sample.common.domain.Sample;
+import com.sample.common.entity.Sample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class CommonRepository {
+public class CommonMongoDBRepository {
 
     @Autowired
     MongoTemplate mongoTemplate;
