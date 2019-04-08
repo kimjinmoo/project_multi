@@ -52,6 +52,9 @@ public class DBConfig {
         config.setUsername("root");
         config.setPassword("Qwer!234");
         config.setDriverClassName("com.mysql.jdbc.Driver");
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
         HikariDataSource dataSource = new HikariDataSource(config);
         return dataSource;
@@ -71,6 +74,7 @@ public class DBConfig {
     }
 
     Properties hibernateProperties() {
+        // create-drop 으로 구동 및 종료시 테이블 create drop이 자동으로 된다.
         return new Properties() {
             {
                 setProperty("hibernate.hbm2ddl.auto",

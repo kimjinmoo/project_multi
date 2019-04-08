@@ -13,12 +13,25 @@ public class CommonMongoDBRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
+    public void create(Sample sample) {
+        mongoTemplate.insert(sample);
+    }
+
     public List<Sample> findAll() {
         return (List<Sample>) mongoTemplate.findAll(Sample.class);
     }
 
-    public void create(Sample sample) {
-        mongoTemplate.insert(sample);
+    public Sample findById(String id) {
+        return mongoTemplate.findById(id, Sample.class);
     }
+
+    public void update(Sample sample) {
+        mongoTemplate.save(sample);
+    }
+
+    public void delete(Sample sample) {
+        mongoTemplate.remove(sample);
+    }
+
 
 }

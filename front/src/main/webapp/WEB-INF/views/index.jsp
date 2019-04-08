@@ -9,16 +9,19 @@
 <body>
 <div>
     MongoDB
-    <button onclick="onBtnAdd()">add Data</button>
-    <button onclick="onBtnSelect()">any name</button>
+    <button onclick="onBtnAdd()">add Sample Data</button>
+    <button onclick="onBtnSelect()">select All Sample</button>
 </div>
 <br>
 <div>
     Mysql
     <button onclick="onBtnAddUser()">user ADD</button>
+    <input type="text" id="userPage" value="0">
     <button onclick="onBtnSelectUser()">select All User</button>
     <button onclick="onBtnUpdateUser()">update User</button>
-    <button onclick="onBtnDeleteUser()">update User</button>
+    <button onclick="onBtnDeleteUser()">delete User</button>
+
+    <div id="view"></div>
 </div>
     <script>
         var onBtnAdd = function() {
@@ -26,7 +29,7 @@
                 type: "POST",
                 url: "/api/sample",
                 success: function() {
-                    alert("complete");
+                  $("#view").text("complete")
                 }
             });
         }
@@ -34,9 +37,9 @@
         var onBtnSelect = function() {
             $.ajax({
                 type: "get",
-                url: "/api/sample/any",
+                url: "/api/sample",
                 success: function(data) {
-                    alert(JSON.stringify(data));
+                  $("#view").text(JSON.stringify(data))
                 }
             });
         }
@@ -57,7 +60,7 @@
                     "phone": "010-3333-3333"
                 }),
                 success: function(data) {
-                    alert(JSON.stringify(data));
+                  $("#view").text(JSON.stringify(data))
                 }
             });
         }
@@ -65,9 +68,9 @@
         var onBtnSelectUser = function() {
             $.ajax({
                 type: "get",
-                url: "/api/rdb/user?page=1",
+                url: "/api/rdb/user?page="+$("#userPage").val(),
                 success: function(data) {
-                    alert(JSON.stringify(data));
+                  $("#view").text(JSON.stringify(data))
                 }
             });
         }
@@ -88,7 +91,7 @@
                     "phone": "010-3333-3333"
                 }),
                 success: function(data) {
-                    alert(JSON.stringify(data));
+                  $("#view").text(JSON.stringify(data))
                 }
             });
         }
@@ -100,7 +103,7 @@
                 contentType : "appliaction/json",
                 dataType: 'json',
                 success: function(data) {
-                    alert(JSON.stringify(data));
+                  $("#view").text(JSON.stringify(data))
                 }
             });
         }

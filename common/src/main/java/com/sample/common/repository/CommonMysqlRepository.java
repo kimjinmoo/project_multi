@@ -16,14 +16,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class CommonMysqlRepository {
-
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    private Session getSession() {
-        return sessionFactory.getCurrentSession();
-    }
+public class CommonMysqlRepository extends CommonMysqlAbstractRepository{
 
     public List<User> findAll() {
         Criteria criteria = getSession().createCriteria(User.class);
