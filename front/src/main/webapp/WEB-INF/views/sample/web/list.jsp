@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -26,7 +26,7 @@
         <input type="hidden" name="id" id="id"></input>
     </form>
     <h1>API CRUD 게시판</h1>
-    <button data-toggle="modal" data-target="#addModal">등록</button>
+    <button onclick="location.href='./add';">등록</button>
     <table class="table">
         <thead>
         <tr>
@@ -37,24 +37,51 @@
         </tr>
         </thead>
         <tbody>
-            <c:forEach var="obj" items="${data.data}">
-                <tr>
-                    <td onclick="detail(${obj.id})" style="cursor: pointer">${obj.id}</td>
-                    <td onclick="detail(${obj.id})" style="cursor: pointer">${obj.userName}</td>
-                    <td>${obj.phone}</td>
-                    <td><button onclick="deleteUser(${obj.id})">삭제</button></td>
-                </tr>
-            </c:forEach>
+        <c:forEach var="obj" items="${data.data}">
+            <tr>
+                <td onclick="detail(${obj.id})" style="cursor: pointer">${obj.id}</td>
+                <td onclick="detail(${obj.id})" style="cursor: pointer">${obj.userName}</td>
+                <td>${obj.phone}</td>
+                <td>
+                    <button onclick="deleteUser(${obj.id})">삭제</button>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
-        <script>
-            var detail = function(id) {
-              location.href="/sample/web/detail?id="+id;
+    </table>
+    <div class="center-block ">
+        <nav aria-label="Page navigation">
+            <ul class="pagination" id="paging">
+            </ul>
+        </nav>
+    </div>
+
+    <script>
+      $(function () {
+        //makePage();
+      })
+      var detail = function (id) {
+        location.href = "/sample/web/detail?id=" + id;
+      }
+      var deleteUser = function (id) {
+        $("#id").val(id);
+        $("#deleteFrm").submit();
+      }
+      // 페이징 처리 만들기
+      var makePage = function () {
+        var totalSize = '<c:out value="${data.total}"></c:out>';
+        var totalPages = Math.ceil(totalSize / 15);
+        if (totalPages != 0) {
+          $("#paging").twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 5,
+            onPageClick: function (event, page) {
+              location.href = "/sample/web/list?page=" + page;
             }
-            var deleteUser = function(id) {
-              $("#id").val(id);
-              $("#deleteFrm").submit();
-            }
-        </script>
+          })
+        }
+      }
+    </script>
     </table>
 </div>
 </body>

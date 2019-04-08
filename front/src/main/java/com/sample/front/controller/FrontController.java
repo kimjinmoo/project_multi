@@ -75,6 +75,13 @@ public class FrontController {
         return mv;
     }
 
+    @GetMapping("/sample/web/add")
+    public ModelAndView webAdd() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sample/web/add");
+        return mv;
+    }
+
     @PostMapping("/sample/web/add")
     public ModelAndView webAdd(@ModelAttribute User user) {
         ModelAndView mv = new ModelAndView();
@@ -98,24 +105,28 @@ public class FrontController {
         return mv;
     }
 
-//    @PostMapping("/sample/web/update")
-//    public ModelAndView webUpdate(@RequestParam User user) {
-//        ModelAndView mv = new ModelAndView();
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        JSONObject parameters = new JSONObject();
-//        parameters.put("username", strId);
-//        parameters.put("password", strPW);
-//        parameters.put("name", strName);
-//        parameters.put("email", strEmail);
-//
-//        String resourceUrl = "http://localhost:8180/api/rdb/user/"+user.getId();
-//        restTemplate.put(resourceUrl);
-//
-//        mv.setViewName("redirect:/sample/web/list?page=1");
-//
-//        return mv;
-//    }
+    @PostMapping("/sample/web/update")
+    public ModelAndView webUpdate(@ModelAttribute User user) {
+        ModelAndView mv = new ModelAndView();
+
+        RestTemplate restTemplate = new RestTemplate();
+
+
+        String resourceUrl = "http://localhost:8180/api/rdb/user/"+user.getId();
+        // set Header
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Set Params
+        HttpEntity<String> entity = new HttpEntity<String>(new Gson().toJson(user), headers);
+
+        // send Api
+        restTemplate.put(resourceUrl, entity, String.class);
+
+        mv.setViewName("redirect:/sample/web/list?page=1");
+
+        return mv;
+    }
 
     @PostMapping("/sample/web/delete")
     public ModelAndView webDelete(@RequestParam int id) {

@@ -28,7 +28,7 @@
 <div class="container">
     <form action="/sample/web/add" method="post">
         <h1>API CRUD 게시판 - 등록</h1>
-        <div>ID : <input type="number" name="id" value="" readonly></div>
+        <div>ID : <input type="number" name="id" value=""></div>
         <div>name : <input type="text" name="userName" value=""></div>
         <div>phone : <input type="text" name="phone" value=""></div>
         <button type="submit">등록</button>
