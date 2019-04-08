@@ -28,9 +28,9 @@
 <div class="container">
     <form action="/sample/web/update" method="post">
         <h1>API CRUD 게시판 - 상세보기</h1>
-        <div>ID : <input type="number" value="${data.id}" readonly></div>
-        <div>name : <input type="text" value="${data.userName}"></div>
-        <div>phone : <input type="text" value="${data.phone}"></div>
+        <div>ID : <input type="number" name="id" value="${data.id}" readonly></div>
+        <div>name : <input type="text" name="userName" value="${data.userName}"></div>
+        <div>phone : <input type="text" name="phone" value="${data.phone}"></div>
         <button type="submit">수정</button>
         <button onclick="history.back(-1)">뒤로 가기</button>
     </form>
