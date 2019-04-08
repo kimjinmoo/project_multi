@@ -216,8 +216,9 @@
           dataType: 'json',
           success: function (data) {
             // 리스트를 처음 페이지로 이동한다.
-            onList(1);
             alert("삭제 처리 되었습니다.");
+            // 리스트 초기화
+            onList(1);
           }
         });
       }
