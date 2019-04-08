@@ -16,4 +16,20 @@ public class FrontController {
         mv.setViewName("/index");
         return mv;
     }
+
+    @GetMapping("/sample/api")
+    public ModelAndView api() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sample/api/list");
+
+        return mv;
+    }
+
+    @GetMapping("/sample/web")
+    public ModelAndView web() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/sample/web/index");
+
+        return mv;
+    }
 }

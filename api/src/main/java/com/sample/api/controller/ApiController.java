@@ -3,6 +3,7 @@ package com.sample.api.controller;
 import com.sample.common.entity.Sample;
 import com.sample.common.entity.User;
 import com.sample.common.service.CommonService;
+import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -92,8 +93,12 @@ public class ApiController {
      * @return User
      */
     @GetMapping("/rdb/user")
-    public List<User> getUser(@RequestParam int page) {
-        return commonService.findUserAll(page);
+    public ResponseEntity<Object> getUser(@RequestParam int page) {
+        HashMap<String, Object> r = new HashMap<>();
+        r.put("data", commonService.findUserAll(page));
+        r.put("total", commonService.getUserTotalSize());
+
+        return ResponseEntity.ok().body(r);
     }
 
     /**

@@ -74,13 +74,23 @@ public class CommonService {
 
     /**
      *
+     * MySql 전제 조회
+     *
+     * @return
+     */
+    public int getUserTotalSize() {
+        return commonMysqlRepository.getUserTotalSize();
+    }
+
+    /**
+     *
      * MySql 전체 조회
      *
      * @param page 페이지
      * @return List<User>
      */
     public List<User> findUserAll(int page) {
-        return commonMysqlRepository.findAll(page);
+        return commonMysqlRepository.findAll(page-1);
     }
 
     /**

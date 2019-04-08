@@ -13,5 +13,6 @@ dependencies {
     compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
     compile group: 'com.zaxxer', name: 'HikariCP', version: '3.2.0'
 
+    compile group: 'org.flywaydb', name: 'flyway-core', version: '4.2.0'
 
 }

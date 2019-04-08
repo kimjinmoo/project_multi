@@ -4,8 +4,11 @@ import com.mongodb.MongoClient;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.flywaydb.core.Flyway;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -61,6 +64,7 @@ public class DBConfig {
     }
 
     @Bean
+    @Qualifier
     public HibernateTransactionManager transactionManager() {
 
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
@@ -85,5 +89,13 @@ public class DBConfig {
                         "true");
             }
         };
+    }
+
+    @Bean(initMethod = "migrate")
+    public Flyway flyway() {
+        Flyway flyway = new Flyway();
+        flyway.setBaselineOnMigrate(true);
+        flyway.setDataSource(dataSource());
+        return flyway;
     }
 }

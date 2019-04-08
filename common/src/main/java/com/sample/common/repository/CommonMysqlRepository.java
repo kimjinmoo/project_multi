@@ -1,6 +1,7 @@
 package com.sample.common.repository;
 
 import com.sample.common.entity.User;
+import java.util.Optional;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,6 +19,14 @@ import java.util.List;
 @Repository
 public class CommonMysqlRepository extends CommonMysqlAbstractRepository{
 
+    public int getUserTotalSize() {
+        String countQ = "SELECT count (u.id) FROM User u";
+        Query countQuery = getSession().createQuery(countQ);
+        Long countResults = (Long) countQuery.uniqueResult();
+
+        return Optional.ofNullable(countResults).orElse(0l).intValue();
+    }
+
     public List<User> findAll() {
         Criteria criteria = getSession().createCriteria(User.class);
         return (List<User>) criteria.list();
@@ -25,7 +34,7 @@ public class CommonMysqlRepository extends CommonMysqlAbstractRepository{
 
     public List<User> findAll(int page) {
         // 페이징 사이트를 Set
-        int pageSize = 2;
+        int pageSize = 15;
         Criteria criteria = getSession().createCriteria(User.class);
         criteria.setFirstResult(page*pageSize);
         criteria.setMaxResults(pageSize);
