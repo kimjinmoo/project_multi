@@ -37,7 +37,7 @@
 <body>
 <div class="container">
     <h1>API CRUD 게시판</h1>
-    <button data-toggle="modal" data-target="#exampleModal">등록</button>
+    <button data-toggle="modal" data-target="#addModal">등록</button>
     <table class="table">
         <thead>
         <tr>
@@ -56,7 +56,7 @@
         </nav>
     </div>
 
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal" id="addModal" tabindex="-1" role="dialog">
 
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -74,11 +74,11 @@
                         Name : <input id="userName" name="userName" value="">
                     </div>
                     <div>
-                        Name : <input id="phone" name="phone" value="">
+                        phone : <input id="phone" name="phone" value="">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="onBtnAddUser()">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="onBtnAdd()">추가</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -131,6 +131,7 @@
             // 리스트를 처음 페이지로 이동한다.
             onList(1);
             alert("삭제 처리 되었습니다.");
+            $('#addModal').modal('hide');
           }
         });
       }
@@ -151,7 +152,8 @@
             "phone": $("#phone").val()
           }),
           success: function (data) {
-            $("#view").text(JSON.stringify(data))
+            // 리스트 초기화
+            onList(1);
           }
         });
       }
