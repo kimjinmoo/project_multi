@@ -1,8 +1,14 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%--
+  Created by IntelliJ IDEA.
+  User: developer
+  Date: 2019-04-08
+  Time: 오후 6:04
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Web CRUD 게시판</title>
+    <title>수정</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -20,28 +26,14 @@
 </head>
 <body>
 <div class="container">
-    <h1>API CRUD 게시판</h1>
-    <button data-toggle="modal" data-target="#addModal">등록</button>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">name</th>
-            <th scope="col">phone</th>
-            <th scope="col">삭제</th>
-        </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="obj" items="${data.data}">
-                <tr>
-                    <td>${obj.id}</td>
-                    <td>${obj.userName}</td>
-                    <td>${obj.phone}</td>
-                    <td>삭제</td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+    <form action="/sample/web/update">
+        <h1>API CRUD 게시판 - 상세보기</h1>
+        <div>ID : <input type="number" value="${data.id}" readonly></div>
+        <div>name : <input type="text" value="${data.userName}"></div>
+        <div>phone : <input type="text" value="${data.phone}"></div>
+        <button>수정</button>
+        <button onclick="history.back(-1)">뒤로 가기</button>
+    </form>
 </div>
 </body>
 </html>
