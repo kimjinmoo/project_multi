@@ -23,7 +23,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"
+            crossorigin="anonymous"></script>
 
     <style>
         .center-block {
@@ -31,6 +32,9 @@
             display: block;
             margin-right: auto;
             margin-left: auto;
+        }
+        .pointer_click {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -44,6 +48,7 @@
             <th scope="col">#</th>
             <th scope="col">name</th>
             <th scope="col">phone</th>
+            <th scope="col">삭제</th>
         </tr>
         </thead>
         <tbody id="lists">
@@ -68,18 +73,51 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        ID : <input id="id" name="id" value="">
+                        ID : <input id="id" name="id" value="" type="number">
                     </div>
                     <div>
-                        Name : <input id="userName" name="userName" value="">
+                        Name : <input id="userName" name="userName" value="" type="text">
                     </div>
                     <div>
-                        phone : <input id="phone" name="phone" value="">
+                        phone : <input id="phone" name="phone" value="" type="text">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="onBtnAdd()">추가</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="editModal" tabindex="-1" role="dialog">
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">에디터</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        ID : <input id="updateId" name="updateId" type="number" readonly>
+                    </div>
+                    <div>
+                        Name : <input id="updateUserName" name="UpdateUserName" value=""
+                                      type="text">
+                    </div>
+                    <div>
+                        phone : <input id="updatePhone" name="updatePhone" value="" type="text">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="onBtnUpdateUser()">수정
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -87,8 +125,8 @@
 
     <script type="text/javascript">
       var listSize = 15
-      var totalSize = 0;
-      var currentPage = 1;
+      var totalSize = 0
+      var currentPage = 1
 
       $(function () {
         init();
@@ -110,9 +148,10 @@
             var list = []
             for (var i = 0; i < d.length; i++) {
               var obj = d[i];
-              console.log(JSON.stringify(obj));
               list.push(
-                  "<tr><th scope='row'>" + obj.id + "</th><th>" + obj.userName + "</th><th>" + obj.phone + "</th><th><a href='#' onclick='btnDelete("+obj.id+")'>삭제</a></th></tr>"
+                  "<tr><th scope='row' class='pointer_click' onclick='btnUser(" + obj.id + ")'>" + obj.id + "</th><th>"
+                  + obj.userName + "</th><th>" + obj.phone
+                  + "</th><th><a href='#' onclick='btnDelete(" + obj.id + ")'>삭제</a></th></tr>"
               )
             }
             $("#lists").html(list.join())
@@ -121,17 +160,64 @@
         });
       }
 
-      var btnDelete = function(id) {
+      // 모달 초기화
+      var initModalInput = function() {
+        $("#updateId").val("")
+        $("#updateUserName").val("")
+        $("#updatePhone").val("");
+        $("#id").val("")
+        $("#userName").val("")
+        $("#phone").val("")
+      }
+
+      var btnUser = function (id) {
+        $.ajax({
+          type: "get",
+          url: "/api/rdb/user/" + id,
+          contentType: "appliaction/json",
+          dataType: 'json',
+          success: function (data) {
+            $("#updateId").val(data.id)
+            $("#updateUserName").val(data.userName)
+            $("#updatePhone").val(data.phone);
+            $('#editModal').modal('show');
+          }
+        });
+      }
+
+      var onBtnUpdateUser = function (id) {
+        $.ajax({
+          type: "put",
+          url: "/api/rdb/user/" + $("#updateId").val(),
+          contentType: "appliaction/json",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          dataType: 'json',
+          data: JSON.stringify({
+            "userName": $("#updateUserName").val(),
+            "phone": $("#updatePhone").val()
+          }),
+          success: function (data) {
+            // 페이지 초기화
+            onList(1);
+            $('#editModal').modal("toggle");
+            initModalInput()
+          }
+        });
+      }
+
+      var btnDelete = function (id) {
         $.ajax({
           type: "delete",
-          url: "/api/rdb/user/"+id,
+          url: "/api/rdb/user/" + id,
           contentType: "appliaction/json",
           dataType: 'json',
           success: function (data) {
             // 리스트를 처음 페이지로 이동한다.
             onList(1);
             alert("삭제 처리 되었습니다.");
-            $('#addModal').modal('hide');
           }
         });
       }
@@ -154,6 +240,10 @@
           success: function (data) {
             // 리스트 초기화
             onList(1);
+            $('#addModal').modal("toggle");
+            initModalInput()
+          }, error: function(data) {
+            alert(JSON.stringify(data));
           }
         });
       }
@@ -161,11 +251,11 @@
       // 페이징 처리 만들기
       var makePage = function () {
         var totalPages = Math.ceil(totalSize / listSize);
-        if(totalPages != 0) {
+        if (totalPages != 0) {
           $("#paging").twbsPagination({
             totalPages: totalPages,
             visiblePages: 5,
-            onPageClick: function(event, page) {
+            onPageClick: function (event, page) {
               onList(page);
             }
           })

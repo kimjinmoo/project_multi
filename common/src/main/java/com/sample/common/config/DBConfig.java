@@ -82,7 +82,7 @@ public class DBConfig {
         return new Properties() {
             {
                 setProperty("hibernate.hbm2ddl.auto",
-                        "create-drop");
+                        "update");
                 setProperty("hibernate.dialect",
                         "org.hibernate.dialect.MySQL5Dialect");
                 setProperty("hibernate.globally_quoted_identifiers",
